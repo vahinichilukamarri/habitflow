@@ -123,25 +123,25 @@ export default function HabitTracker() {
   }, []);
 
   const loadHabits = async () => {
-    try {
-      const result = await window.storage.get('habits-data');
-      if (result && result.value) {
-        setHabits(JSON.parse(result.value));
-      }
-    } catch (error) {
-      console.log('No existing habits found');
-    } finally {
-      setIsLoading(false);
+  try {
+    const stored = localStorage.getItem('habits-data');
+    if (stored) {
+      setHabits(JSON.parse(stored));
     }
-  };
+  } catch (error) {
+    console.log('No existing habits found');
+  } finally {
+    setIsLoading(false);
+  }
+};
 
-  const saveHabits = async (updatedHabits) => {
-    try {
-      await window.storage.set('habits-data', JSON.stringify(updatedHabits));
-    } catch (error) {
-      console.error('Failed to save habits:', error);
-    }
-  };
+  const saveHabits = (updatedHabits) => {
+  try {
+    localStorage.setItem('habits-data', JSON.stringify(updatedHabits));
+  } catch (error) {
+    console.error('Failed to save habits:', error);
+  }
+};
 
   const addHabit = (name = newHabitName, category = newHabitCategory) => {
     if (name.trim()) {
